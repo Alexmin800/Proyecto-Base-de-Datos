@@ -1,0 +1,73 @@
+--Ver pacientes activos--
+SELECT *
+FROM aminchala.paciente
+WHERE estado = TRUE;
+
+
+--Ver cada medico con su especialidad--
+SELECT 
+    m.id_medico,
+    m.nombres,
+    m.apellidos,
+    e.nombre AS especialidad
+FROM aminchala.medico m
+JOIN aminchala.especialidad e
+    ON m.id_especialidad = e.id_especialidad;
+
+
+--Ver historial medico de un paciente especifico--
+SELECT 
+    p.nombres,
+    p.apellidos,
+    h.diagnostico,
+    h.tratamiento,
+    c.fecha
+FROM aminchala.historial_medico h
+JOIN aminchala.cita c ON h.id_cita = c.id_cita
+JOIN aminchala.paciente p ON c.id_paciente = p.id_paciente
+WHERE p.id_paciente = 38;
+
+
+--Citas programadas por fecha--
+SELECT *
+FROM aminchala.cita
+WHERE estado_cita = 'Programada'
+ORDER BY fecha, hora;
+
+
+--ver diagnosticos mas frecuentes--
+SELECT 
+    diagnostico,
+    COUNT(*) AS cantidad
+FROM aminchala.historial_medico
+GROUP BY diagnostico
+ORDER BY cantidad DESC;
+
+
+--ver ultimas 5 citas registradas--
+SELECT *
+FROM aminchala.cita
+ORDER BY f_creacion DESC
+LIMIT 5;
+
+
+--ver diagnositcos por especialidad--
+SELECT
+    e.nombre AS especialidad,
+    h.diagnostico,
+    COUNT(*) AS cantidad
+FROM aminchala.historial_medico h
+JOIN aminchala.cita c ON h.id_cita = c.id_cita
+JOIN aminchala.medico m ON c.id_medico = m.id_medico
+JOIN aminchala.especialidad e ON m.id_especialidad = e.id_especialidad
+GROUP BY e.nombre, h.diagnostico
+ORDER BY e.nombre;
+
+
+--ver pacientes inactivos--
+SELECT
+    id_paciente,
+    nombres,
+    apellidos
+FROM aminchala.paciente
+WHERE estado = FALSE;
