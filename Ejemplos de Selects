@@ -1,73 +1,123 @@
---Ver pacientes activos--
-SELECT *
-FROM aminchala.paciente
-WHERE estado = TRUE;
+--Aqui estan todos los 5 selects que el profesor me inidico para probar sobre las tablas
 
-
---Ver cada medico con su especialidad--
-SELECT 
-    m.id_medico,
-    m.nombres,
-    m.apellidos,
-    e.nombre AS especialidad
-FROM aminchala.medico m
-JOIN aminchala.especialidad e
-    ON m.id_especialidad = e.id_especialidad;
-
-
---Ver historial medico de un paciente especifico--
-SELECT 
-    p.nombres,
-    p.apellidos,
-    h.diagnostico,
-    h.tratamiento,
-    c.fecha
-FROM aminchala.historial_medico h
-JOIN aminchala.cita c ON h.id_cita = c.id_cita
-JOIN aminchala.paciente p ON c.id_paciente = p.id_paciente
-WHERE p.id_paciente = 38;
-
-
---Citas programadas por fecha--
-SELECT *
-FROM aminchala.cita
-WHERE estado_cita = 'Programada'
-ORDER BY fecha, hora;
-
-
---ver diagnosticos mas frecuentes--
-SELECT 
-    diagnostico,
-    COUNT(*) AS cantidad
-FROM aminchala.historial_medico
-GROUP BY diagnostico
-ORDER BY cantidad DESC;
-
-
---ver ultimas 5 citas registradas--
-SELECT *
-FROM aminchala.cita
-ORDER BY f_creacion DESC
+--select 1) Top 5 médicos por atenciones (citas atendidas) Enunciado: Dirección médica quiere reconocer a los 5 médicos con más atenciones. Calcula el número de citas con estado_cita = 'ATENDIDA' por médico (solo registros estado = TRUE). Muestra médico, especialidad y total de atenciones, ordenado de mayor a menor. Usa un CTE.
+WITH atenciones_por_medico AS (
+    SELECT
+        m.id_medico,
+        m.nombres || ' ' || m.apellidos AS medico,
+        e.nombre AS especialidad,
+        COUNT(*) AS total_atenciones
+    FROM aminchala.cita c
+    INNER JOIN aminchala.medico m ON m.id_medico = c.id_medico
+    INNER JOIN aminchala.especialidad e ON e.id_especialidad = m.id_especialidad
+    WHERE c.estado = TRUE
+      AND c.estado_cita = 'ATENDIDA'
+      AND m.estado = TRUE
+    GROUP BY m.id_medico, medico, e.nombre
+)
+SELECT
+    medico,
+    especialidad,
+    total_atenciones
+FROM atenciones_por_medico
+ORDER BY total_atenciones DESC
 LIMIT 5;
 
 
---ver diagnositcos por especialidad--
+
+--select 2) Agenda del día: citas programadas por consultorio (con paciente y médico) Enunciado: Coordinación desea ver la agenda del día: lista las citas con estado_cita = 'PROGRAMADA' para la fecha actual, mostrando hora, paciente, médico y consultorio. Ordena por consultorio y hora.
 SELECT
-    e.nombre AS especialidad,
-    h.diagnostico,
-    COUNT(*) AS cantidad
-FROM aminchala.historial_medico h
-JOIN aminchala.cita c ON h.id_cita = c.id_cita
-JOIN aminchala.medico m ON c.id_medico = m.id_medico
-JOIN aminchala.especialidad e ON m.id_especialidad = e.id_especialidad
-GROUP BY e.nombre, h.diagnostico
-ORDER BY e.nombre;
+    co.nombre AS consultorio,
+    c.hora,
+    p.nombres || ' ' || p.apellidos AS paciente,
+    m.nombres || ' ' || m.apellidos AS medico
+FROM aminchala.cita c
+INNER JOIN aminchala.paciente p ON p.id_paciente = c.id_paciente
+INNER JOIN aminchala.medico m ON m.id_medico = c.id_medico
+INNER JOIN aminchala.consultorio co ON co.id_consultorio = c.id_consultorio
+WHERE c.estado = TRUE
+  AND c.estado_cita = 'PROGRAMADA'
+  AND c.fecha = CURRENT_DATE
+ORDER BY co.nombre, c.hora;
 
 
---ver pacientes inactivos--
+--select 3) Conversión mensual: citas → historial médico Enunciado: Gerencia quiere medir calidad operativa: de todas las citas activas por mes, ¿cuántas tienen historial médico registrado? Muestra por mes: total de citas, citas con historial y porcentaje de conversión.
+
 SELECT
-    id_paciente,
-    nombres,
-    apellidos
-FROM aminchala.paciente
-WHERE estado = FALSE;
+    TO_CHAR(c.fecha, 'YYYY-MM') AS mes,
+    COUNT(c.id_cita) AS total_citas,
+    COUNT(h.id_historial) AS citas_con_historial,
+    ROUND(
+        (COUNT(h.id_historial)::numeric / COUNT(c.id_cita)) * 100,
+        2
+    ) AS porcentaje_conversion
+FROM aminchala.cita c
+LEFT JOIN aminchala.historial_medico h
+       ON h.id_cita = c.id_cita
+       AND h.estado = TRUE
+WHERE c.estado = TRUE
+GROUP BY mes
+ORDER BY mes;
+
+
+--select 4) Demanda por especialidad: citas por estado y participación (%) Enunciado: La administración necesita entender la demanda por especialidad y cómo se distribuye por estado de cita (PROGRAMADA, ATENDIDA, CANCELADA). Calcula el número de citas por especialidad y estado, y la participación porcentual de cada estado dentro de la especialidad.
+WITH citas_por_especialidad AS (
+    SELECT
+        e.nombre AS especialidad,
+        c.estado_cita,
+        COUNT(*) AS total
+    FROM aminchala.cita c
+    INNER JOIN aminchala.medico m ON m.id_medico = c.id_medico
+    INNER JOIN aminchala.especialidad e ON e.id_especialidad = m.id_especialidad
+    WHERE c.estado = TRUE
+    GROUP BY e.nombre, c.estado_cita
+),
+totales_especialidad AS (
+    SELECT
+        especialidad,
+        SUM(total) AS total_especialidad
+    FROM citas_por_especialidad
+    GROUP BY especialidad
+)
+SELECT
+    cpe.especialidad,
+    cpe.estado_cita,
+    cpe.total,
+    ROUND(
+        (cpe.total::numeric / te.total_especialidad) * 100,
+        2
+    ) AS participacion_porcentual
+FROM citas_por_especialidad cpe
+INNER JOIN totales_especialidad te
+        ON te.especialidad = cpe.especialidad
+ORDER BY cpe.especialidad, cpe.estado_cita;
+
+
+
+--select 5) Auditoría clínica: citas ATENDIDAS sin historial y citas CANCELADAS con historial
+Enunciado:
+Auditoría requiere detectar incoherencias: (a) citas con estado_cita = 'ATENDIDA' sin historial médico, y (b) citas CANCELADAS con historial médico (no deberían tenerlo). Muestra paciente, médico, consultorio, fecha/hora y una bandera del caso.
+SELECT
+    p.nombres || ' ' || p.apellidos AS paciente,
+    m.nombres || ' ' || m.apellidos AS medico,
+    co.nombre AS consultorio,
+    c.fecha,
+    c.hora,
+    CASE
+        WHEN c.estado_cita = 'ATENDIDA' AND h.id_historial IS NULL
+            THEN 'ATENDIDA SIN HISTORIAL'
+        WHEN c.estado_cita = 'CANCELADA' AND h.id_historial IS NOT NULL
+            THEN 'CANCELADA CON HISTORIAL'
+    END AS tipo_incoherencia
+FROM aminchala.cita c
+INNER JOIN aminchala.paciente p ON p.id_paciente = c.id_paciente
+INNER JOIN aminchala.medico m ON m.id_medico = c.id_medico
+INNER JOIN aminchala.consultorio co ON co.id_consultorio = c.id_consultorio
+LEFT JOIN aminchala.historial_medico h ON h.id_cita = c.id_cita
+WHERE c.estado = TRUE
+  AND (
+        (c.estado_cita = 'ATENDIDA' AND h.id_historial IS NULL)
+     OR (c.estado_cita = 'CANCELADA' AND h.id_historial IS NOT NULL)
+  )
+ORDER BY c.fecha, c.hora;
+
