@@ -1,187 +1,216 @@
---Insets de especialidades--
-INSERT INTO aminchala.especialidad (nombre, descripcion) VALUES
-('Cardiología', 'Especialidad del corazón'),
-('Pediatría', 'Atención a niños'),
-('Neurología', 'Sistema nervioso'),
-('Dermatología', 'Enfermedades de la piel'),
-('Medicina General', 'Atención general');
-
---Insets de consultorios--
-INSERT INTO aminchala.consultorio (nombre, piso, descripcion) VALUES
-('Consultorio A', 1, 'Planta baja'),
-('Consultorio B', 1, 'Planta baja'),
-('Consultorio C', 2, 'Segundo piso'),
-('Consultorio D', 2, 'Segundo piso'),
-('Consultorio E', 3, 'Tercer piso');
-
---Insets de medicos--
-INSERT INTO aminchala.medico (nombres, apellidos, telefono, correo, id_especialidad) VALUES
-('Juan', 'Perez', '0991111111', 'jperez@correo.com', 1),
-('Ana', 'Gomez', '0992222222', 'agomez@correo.com', 2),
-('Luis', 'Martinez', '0993333333', 'lmartinez@correo.com', 3),
-('Carla', 'Lopez', '0994444444', 'clopez@correo.com', 4),
-('Pedro', 'Ramirez', '0995555555', 'pramirez@correo.com', 5),
-('Sofia', 'Torres', '0996666666', 'storres@correo.com', 1),
-('Diego', 'Vera', '0997777777', 'dvera@correo.com', 2),
-('Maria', 'Castro', '0998888888', 'mcastro@correo.com', 3),
-('Andres', 'Mora', '0999999999', 'amora@correo.com', 4),
-('Paula', 'Rios', '0981111111', 'prios@correo.com', 5);
-
---Insets de pacientes activos--
-INSERT INTO aminchala.paciente (nombres, apellidos, cedula, telefono, correo, direccion) VALUES
-('Carlos','Mendoza','0100000001','0987000001','c1@mail.com','Quito'),
-('Luis','Ortega','0100000002','0987000002','c2@mail.com','Guayaquil'),
-('Mario','Sanchez','0100000003','0987000003','c3@mail.com','Cuenca'),
-('Jose','Diaz','0100000004','0987000004','c4@mail.com','Loja'),
-('Miguel','Ruiz','0100000005','0987000005','c5@mail.com','Ambato'),
-('Andrea','Vega','0100000006','0987000006','c6@mail.com','Quito'),
-('Lucia','Perez','0100000007','0987000007','c7@mail.com','Guayaquil'),
-('Daniel','Reyes','0100000008','0987000008','c8@mail.com','Cuenca'),
-('Paola','Silva','0100000009','0987000009','c9@mail.com','Loja'),
-('Jorge','Cruz','0100000010','0987000010','c10@mail.com','Ambato'),
-('Kevin','Mora','0100000011','0987000011','c11@mail.com','Quito'),
-('Rosa','Navas','0100000012','0987000012','c12@mail.com','Guayaquil'),
-('Fernando','Luna','0100000013','0987000013','c13@mail.com','Cuenca'),
-('Monica','Flores','0100000014','0987000014','c14@mail.com','Loja'),
-('Ricardo','Paz','0100000015','0987000015','c15@mail.com','Ambato'),
-('Natalia','Benitez','0100000016','0987000016','c16@mail.com','Quito'),
-('Oscar','Bravo','0100000017','0987000017','c17@mail.com','Guayaquil'),
-('Patricia','Leon','0100000018','0987000018','c18@mail.com','Cuenca'),
-('Victor','Herrera','0100000019','0987000019','c19@mail.com','Loja'),
-('Elena','Campos','0100000020','0987000020','c20@mail.com','Ambato'),
-('Diego','Salazar','0100000021','0987000021','c21@mail.com','Quito'),
-('Laura','Mendez','0100000022','0987000022','c22@mail.com','Guayaquil'),
-('Ivan','Guerrero','0100000023','0987000023','c23@mail.com','Cuenca'),
-('Diana','Ortiz','0100000024','0987000024','c24@mail.com','Loja'),
-('Julio','Rojas','0100000025','0987000025','c25@mail.com','Ambato'),
-('Sandra','Ponce','0100000026','0987000026','c26@mail.com','Quito'),
-('Alex','Morales','0100000027','0987000027','c27@mail.com','Guayaquil'),
-('Carmen','Delgado','0100000028','0987000028','c28@mail.com','Cuenca'),
-('Hector','Vargas','0100000029','0987000029','c29@mail.com','Loja'),
-('Silvia','Navarro','0100000030','0987000030','c30@mail.com','Ambato'),
-('Rene','Peña','0100000031','0987000031','c31@mail.com','Quito'),
-('Lorena','Acosta','0100000032','0987000032','c32@mail.com','Guayaquil'),
-('Marco','Ibarra','0100000033','0987000033','c33@mail.com','Cuenca'),
-('Veronica','Cedeño','0100000034','0987000034','c34@mail.com','Loja'),
-('Esteban','Correa','0100000035','0987000035','c35@mail.com','Ambato'),
-('Nicolas','Zambrano','0100000036','0987000036','c36@mail.com','Quito'),
-('Camila','Espinoza','0100000037','0987000037','c37@mail.com','Guayaquil'),
-('Adrian','Peralta','0100000038','0987000038','c38@mail.com','Cuenca'),
-('Fabiola','Quintero','0100000039','0987000039','c39@mail.com','Loja'),
-('Bruno','Villalba','0100000040','0987000040','c40@mail.com','Ambato');
+--insert especialidades
+INSERT INTO aminchala.especialidad (nombre, descripcion, estado) VALUES
+('Medicina General','Atención primaria',TRUE),
+('Pediatría','Salud infantil',TRUE),
+('Cardiología','Sistema cardiovascular',TRUE),
+('Ginecología','Salud femenina',TRUE),
+('Traumatología','Sistema óseo',TRUE),
+('Neurología','Sistema nervioso',TRUE);
 
 
---Insets de pacientes inactivos--
+--insert consultorio
+INSERT INTO aminchala.consultorio (nombre, piso, descripcion, estado) VALUES
+('Consultorio 101', 0, 'Medicina General', TRUE),
+('Consultorio 102', 0, 'Medicina General', TRUE),
+('Consultorio 201', 2, 'Pediatría', TRUE),
+('Consultorio 202', 2, 'Cardiología', TRUE),
+('Consultorio 301', 3, 'Ginecología', TRUE),
+('Consultorio 302', 3, 'Traumatología', TRUE);
+
+
+--insert medicos
+INSERT INTO aminchala.medico
+(nombres, apellidos, telefono, correo, id_especialidad, estado)
+VALUES
+-- Medicina General (muy demandada)
+('Carlos','Mendoza','0991111111','cmendoza@clinica.com',1,TRUE),
+('Ana','Paredes','0991111112','aparedes@clinica.com',1,TRUE),
+('Luis','Ortega','0991111113','lortega@clinica.com',1,TRUE),
+
+-- Pediatría
+('María','Santos','0991111114','msantos@clinica.com',2,TRUE),
+('Diego','Vera','0991111115','dvera@clinica.com',2,TRUE),
+
+-- Cardiología
+('Jorge','Rivas','0991111116','jrivas@clinica.com',3,TRUE),
+('Lucía','Ramos','0991111117','lramos@clinica.com',3,TRUE),
+
+-- Ginecología
+('Pedro','Molina','0991111118','pmolina@clinica.com',4,TRUE),
+('Elena','Castro','0991111119','ecastro@clinica.com',4,TRUE),
+
+-- Traumatología
+('Ricardo','López','0991111120','rlopez@clinica.com',5,TRUE),
+
+-- Neurología
+('Fernando','Nuñez','0991111122','fnunez@clinica.com',6,TRUE);
+
+
+
+
+--inserts pacientes activos
 INSERT INTO aminchala.paciente
 (nombres, apellidos, cedula, telefono, correo, direccion, estado)
-VALUES
-('Alberto','Ramos','0100000101','0987100101','inactivo1@mail.com','Quito', FALSE),
-('Beatriz','Molina','0100000102','0987100102','inactivo2@mail.com','Guayaquil', FALSE),
-('Cesar','Paredes','0100000103','0987100103','inactivo3@mail.com','Cuenca', FALSE),
-('Diana','Alvarado','0100000104','0987100104','inactivo4@mail.com','Loja', FALSE),
-('Eduardo','Santana','0100000105','0987100105','inactivo5@mail.com','Ambato', FALSE),
-('Fernanda','Iglesias','0100000106','0987100106','inactivo6@mail.com','Quito', FALSE),
-('Gustavo','Rendon','0100000107','0987100107','inactivo7@mail.com','Guayaquil', FALSE),
-('Helena','Soto','0100000108','0987100108','inactivo8@mail.com','Cuenca', FALSE),
-('Ivan','Montoya','0100000109','0987100109','inactivo9@mail.com','Loja', FALSE),
-('Jessica','Carrillo','0100000110','0987100110','inactivo10@mail.com','Ambato', FALSE);
+SELECT
+'Paciente'||g,
+'Activo',
+'0101000'||g,
+'0983000'||g,
+'paciente'||g||'@mail.com',
+'Quito',
+TRUE
+FROM generate_series(1,38) g;
 
 
---inserts de citas--
-INSERT INTO aminchala.cita (fecha, hora, estado_cita, id_paciente, id_medico, id_consultorio) VALUES
-('2026-01-10','08:00','Programada',1,1,1),
-('2026-01-10','08:30','Programada',2,2,2),
-('2026-01-10','09:00','Programada',3,3,3),
-('2026-01-10','09:30','Programada',4,4,4),
-('2026-01-10','10:00','Programada',5,5,5),
-('2026-01-11','08:00','Programada',6,6,1),
-('2026-01-11','08:30','Programada',7,7,2),
-('2026-01-11','09:00','Programada',8,8,3),
-('2026-01-11','09:30','Programada',9,9,4),
-('2026-01-11','10:00','Programada',10,10,5),
-('2026-01-12','08:00','Programada',11,1,1),
-('2026-01-12','08:30','Programada',12,2,2),
-('2026-01-12','09:00','Programada',13,3,3),
-('2026-01-12','09:30','Programada',14,4,4),
-('2026-01-12','10:00','Programada',15,5,5),
-('2026-01-13','08:00','Programada',16,6,1),
-('2026-01-13','08:30','Programada',17,7,2),
-('2026-01-13','09:00','Programada',18,8,3),
-('2026-01-13','09:30','Programada',19,9,4),
-('2026-01-13','10:00','Programada',20,10,5),
-('2026-01-14','08:00','Programada',21,1,1),
-('2026-01-14','08:30','Programada',22,2,2),
-('2026-01-14','09:00','Programada',23,3,3),
-('2026-01-14','09:30','Programada',24,4,4),
-('2026-01-14','10:00','Programada',25,5,5),
-('2026-01-15','08:00','Programada',26,6,1),
-('2026-01-15','08:30','Programada',27,7,2),
-('2026-01-15','09:00','Programada',28,8,3),
-('2026-01-15','09:30','Programada',29,9,4),
-('2026-01-15','10:00','Programada',30,10,5);
+--inserts pacientes inactivos
+INSERT INTO aminchala.paciente
+(nombres, apellidos, cedula, telefono, correo, direccion, estado)
+SELECT
+'Paciente'||g,
+'Inactivo',
+'0202000'||g,
+'0974000'||g,
+'paciente_inactivo'||g||'@mail.com',
+'Guayaquil',
+FALSE
+FROM generate_series(39,50) g;
+
+
+--inserts citas
+INSERT INTO aminchala.cita
+(fecha, hora, estado_cita, id_paciente, id_medico, id_consultorio, estado)
+SELECT
+    CASE
+        WHEN g <= 15 THEN CURRENT_DATE
+        WHEN g <= 40 THEN CURRENT_DATE - (g % 10)
+        ELSE CURRENT_DATE - (g % 25)
+    END AS fecha,
+    (time '08:00' + (g % 9) * interval '1 hour') AS hora,
+    CASE
+        WHEN g <= 30 THEN 'ATENDIDA'
+        WHEN g <= 50 THEN 'PROGRAMADA'
+        ELSE 'CANCELADA'
+    END AS estado_cita,
+    (1 + (g % 38)) AS id_paciente,
+    CASE
+        WHEN g <= 20 THEN 1     -- médico top 1
+        WHEN g <= 35 THEN 2     -- médico top 2
+        WHEN g <= 45 THEN 4     -- médico top 3
+        WHEN g <= 55 THEN 5     -- médico top 4
+        ELSE 7                 -- médico top 5
+    END AS id_medico,
+    (1 + (g % 6)) AS id_consultorio,
+    TRUE AS estado
+FROM generate_series(1,80) g;
+
 
 INSERT INTO aminchala.cita
-(fecha, hora, estado_cita, id_paciente, id_medico, id_consultorio)
+(fecha, hora, estado_cita, id_paciente, id_medico, id_consultorio, estado)
 VALUES
-('2026-01-16','08:00','Programada',31,1,1),
-('2026-01-16','08:30','Programada',32,2,2),
-('2026-01-16','09:00','Programada',33,3,3),
-('2026-01-16','09:30','Programada',34,4,4),
-('2026-01-16','10:00','Programada',35,5,5),
-('2026-01-17','08:00','Programada',36,6,1),
-('2026-01-17','08:30','Programada',37,7,2),
-('2026-01-17','09:00','Programada',38,8,3),
-('2026-01-17','09:30','Programada',39,9,4),
-('2026-01-17','10:00','Programada',40,10,5);
+-- Médico 3
+(CURRENT_DATE - 3,'08:00','ATENDIDA',1,3,1,TRUE),
+(CURRENT_DATE - 3,'08:30','ATENDIDA',2,3,1,TRUE),
+
+-- Médico 4
+(CURRENT_DATE - 4,'09:00','ATENDIDA',3,4,2,TRUE),
+(CURRENT_DATE - 4,'09:30','ATENDIDA',4,4,2,TRUE),
+
+-- Médico 5
+(CURRENT_DATE - 5,'10:00','ATENDIDA',5,5,3,TRUE),
+(CURRENT_DATE - 5,'10:30','ATENDIDA',6,5,3,TRUE);
 
 
---inserts de Historiales medicos--
+
+INSERT INTO aminchala.cita
+(fecha, hora, estado_cita, id_paciente, id_medico, id_consultorio, estado)
+VALUES
+(CURRENT_DATE,'08:00','PROGRAMADA',10,1,1,TRUE),
+(CURRENT_DATE,'08:30','PROGRAMADA',11,2,1,TRUE),
+
+(CURRENT_DATE,'09:00','PROGRAMADA',12,3,2,TRUE),
+(CURRENT_DATE,'09:30','PROGRAMADA',13,4,2,TRUE),
+
+(CURRENT_DATE,'10:00','PROGRAMADA',14,5,3,TRUE),
+(CURRENT_DATE,'10:30','PROGRAMADA',15,6,3,TRUE),
+
+(CURRENT_DATE,'11:00','PROGRAMADA',16,7,4,TRUE),
+(CURRENT_DATE,'11:30','PROGRAMADA',17,8,4,TRUE),
+
+(CURRENT_DATE,'12:00','PROGRAMADA',18,9,5,TRUE),
+(CURRENT_DATE,'12:30','PROGRAMADA',19,10,5,TRUE);
+
+
+INSERT INTO aminchala.cita
+(fecha, hora, estado_cita, id_paciente, id_medico, id_consultorio, estado)
+SELECT
+    DATE '2024-08-01' + (g * interval '7 days') AS fecha,
+    time '09:00' + (g % 6) * interval '1 hour' AS hora,
+    CASE
+        WHEN g % 3 = 0 THEN 'ATENDIDA'
+        WHEN g % 3 = 1 THEN 'PROGRAMADA'
+        ELSE 'CANCELADA'
+    END AS estado_cita,
+    (1 + (g % 40)) AS id_paciente,
+    (1 + (g % 5)) AS id_medico,
+    (1 + (g % 6)) AS id_consultorio,
+    TRUE
+FROM generate_series(1,36) g;
+
+
+INSERT INTO aminchala.cita
+(fecha, hora, estado_cita, id_paciente, id_medico, id_consultorio, estado)
+VALUES
+(CURRENT_DATE - 3, '10:00', 'ATENDIDA', 5, 3, 2, TRUE),
+(CURRENT_DATE - 7, '15:00', 'ATENDIDA', 8, 6, 4, TRUE);
+
+
+
+--inserts historial medico
 INSERT INTO aminchala.historial_medico
-(diagnostico, tratamiento, observaciones, id_cita)
-VALUES
-('Hipertensión arterial','Medicacion antihipertensiva','Control mensual',1),
-('Gripe común','Reposo e hidratación','Sin complicaciones',2),
-('Migraña crónica','Analgésicos','Seguimiento neurológico',3),
-('Dermatitis atópica','Crema tópica','Mejora progresiva',4),
-('Chequeo general','Vitaminas','Paciente estable',5),
-('Asma leve','Inhalador','Controlado',6),
-('Infección respiratoria','Antibióticos','Mejorando',7),
-('Dolor lumbar','Fisioterapia','Revisión en 15 días',8),
-('Alergia estacional','Antihistamínicos','Evitar alergenos',9),
-('Fatiga','Reposo','Reposo recomendado',10),
-
-('Hipertensión controlada','Medicacion','Presión estable',11),
-('Resfriado','Reposo','Evolución favorable',12),
-('Cefalea','Analgésicos','Reducir estrés',13),
-('Acné','Tratamiento tópico','Seguimiento dermatológico',14),
-('Chequeo anual','Vitaminas','Buen estado general',15),
-('Bronquitis','Antibióticos','Reposo absoluto',16),
-('Faringitis','Antiinflamatorios','Buena respuesta',17),
-('Dolor cervical','Terapia física','Postura recomendada',18),
-('Rinitis alérgica','Antihistamínicos','Controlado',19),
-('Cansancio crónico','Suplementos','Mejorando',20),
-
-('Arritmia leve','Control cardiológico','Monitoreo periódico',21),
-('Gastroenteritis','Hidratación','Dieta blanda',22),
-('Dolor de cabeza','Analgésicos','Control en casa',23),
-('Psoriasis','Tratamiento tópico','Seguimiento',24),
-('Chequeo preventivo','Consejos de salud','Sin novedades',25),
-('Asma moderada','Inhalador','Seguimiento mensual',26),
-('Sinusitis','Antibióticos','Mejora progresiva',27),
-('Lumbalgia','Ejercicios','Fisioterapia',28),
-('Urticaria','Antihistamínicos','Controlada',29),
-('Estrés','Terapia','Recomendado descanso',30);
+(diagnostico, tratamiento, observaciones, id_cita, estado)
+SELECT
+    'Consulta general',
+    'Tratamiento estándar',
+    'Evolución favorable',
+    id_cita,
+    TRUE
+FROM aminchala.cita
+WHERE estado_cita = 'ATENDIDA'
+  AND estado = TRUE
+ORDER BY id_cita
+LIMIT 40;
 
 INSERT INTO aminchala.historial_medico
-(diagnostico, tratamiento, observaciones, id_cita)
-VALUES
-('Chequeo general','Vitaminas','Paciente estable',31),
-('Gripe leve','Reposo','Sin complicaciones',32),
-('Dolor de cabeza','Analgésicos','Seguimiento',33),
-('Problemas cutáneos','Tratamiento tópico','Mejorando',34),
-('Control médico','Recomendaciones','Buen estado',35),
-('Asma leve','Inhalador','Controlado',36),
-('Infección leve','Antibióticos','Mejoría rápida',37),
-('Dolor muscular','Reposo','Ejercicios suaves',38),
-('Alergia','Antihistamínicos','Evitar polvo',39),
-('Fatiga','Descanso','Control en 30 días',40);
+(diagnostico, tratamiento, observaciones, id_cita, estado)
+SELECT
+    'Consulta mensual',
+    'Tratamiento según diagnóstico',
+    'Registro automático',
+    c.id_cita,
+    TRUE
+FROM aminchala.cita c
+WHERE c.estado_cita = 'ATENDIDA'
+  AND c.estado = TRUE
+  AND NOT EXISTS (
+      SELECT 1
+      FROM aminchala.historial_medico h
+      WHERE h.id_cita = c.id_cita
+  )
+LIMIT 30;
+
+
+
+
+--inserts historial medico cancelado
+INSERT INTO aminchala.historial_medico
+(diagnostico, tratamiento, observaciones, id_cita, estado)
+SELECT
+    'Registro indebido',
+    'No aplica',
+    'Error administrativo',
+    id_cita,
+    TRUE
+FROM aminchala.cita
+WHERE estado_cita = 'CANCELADA'
+ORDER BY id_cita
+LIMIT 6;
